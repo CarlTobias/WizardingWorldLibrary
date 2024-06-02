@@ -6,13 +6,17 @@ import android.content.SharedPreferences
 import android.media.MediaRouter.RouteCategory
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.BaseAdapter
+import android.widget.Button
 import android.widget.GridLayout
 import android.widget.ImageView
+import android.widget.PopupWindow
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -23,6 +27,7 @@ import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var showPop: ImageView
     private lateinit var gridLayout: GridLayout
     private lateinit var dropdown: AutoCompleteTextView
     private lateinit var favList: MutableList<String>
@@ -50,6 +55,11 @@ class MainActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+
+        showPop = findViewById(R.id.instructionButton)
+        showPop.setOnClickListener{
+            showPopup()
         }
 
         gridLayout = findViewById(R.id.gridView)
@@ -213,6 +223,22 @@ class MainActivity : AppCompatActivity() {
         if (file.exists()) {
             val data = file.readText()
             favList = data.split("\n").filter { it.isNotEmpty() }.toMutableList()
+        }
+    }
+
+    private fun showPopup() {
+        val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val popupView = inflater.inflate(R.layout.activity_info_popup, null)
+
+        val width = 850
+        val height = 1400
+
+        val instructWindow = PopupWindow(popupView, width, height, true)
+        instructWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0)
+
+        val closeButton = popupView.findViewById<ImageView>(R.id.closeButton)
+        closeButton.setOnClickListener {
+            instructWindow.dismiss()
         }
     }
 }
