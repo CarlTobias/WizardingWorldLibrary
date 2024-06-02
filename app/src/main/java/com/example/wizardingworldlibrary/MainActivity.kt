@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.BaseAdapter
 import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.Spinner
@@ -18,11 +19,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var gridLayout: GridLayout
     private lateinit var dropdown: AutoCompleteTextView
+    private lateinit var favList: MutableList<String>
 
     private lateinit var hp1: ImageView
     private lateinit var hp2: ImageView
@@ -38,6 +41,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        loadData()
+
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -129,6 +135,7 @@ class MainActivity : AppCompatActivity() {
             "All" -> showAll()
             "Harry Potter" -> showAllPotter()
             "Fantastic Beasts" -> showAllBeasts()
+            "Favourites" -> showAllFavs()
         }
     }
 
@@ -180,8 +187,32 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun themePref() {
+    private fun showAllFavs() {
+        hideItems()
 
+        for (i in 0 until  gridLayout.childCount) {
+            val child = gridLayout.getChildAt(i)
+            if (child is ImageView && child.id != View.NO_ID) {
+                val sourceId = resources.getResourceEntryName(child.id)
+                if (sourceId in favList) {
+                    child.visibility = View.VISIBLE
+                }
+                else {
+                    child.visibility = View.GONE
+                }
+            }
+        }
+    }
+    override fun onResume() {
+        super.onResume()
+        loadData()
     }
 
+    private fun loadData() {
+        val file = File(this.filesDir, "list.txt")
+        if (file.exists()) {
+            val data = file.readText()
+            favList = data.split("\n").filter { it.isNotEmpty() }.toMutableList()
+        }
+    }
 }

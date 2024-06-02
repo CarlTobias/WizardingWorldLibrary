@@ -1,29 +1,27 @@
 package com.example.wizardingworldlibrary
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
-import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import java.io.File
 
 class ActivityBook : AppCompatActivity() {
 
-    private lateinit var sharedPref: SharedPreferences
+    private lateinit var favList: MutableList<String>
 
     private lateinit var backButton: ImageView
 
+    private lateinit var favButton: ImageView
     private lateinit var hpfbText: TextView
     private lateinit var storyTitle: TextView
     private lateinit var synopsisText: TextView
+
 
     private lateinit var imageOne: ImageView
     private lateinit var imageTwo: ImageView
@@ -42,6 +40,9 @@ class ActivityBook : AppCompatActivity() {
             insets
         }
 
+        favList = mutableListOf()
+
+        favButton = findViewById(R.id.favButton)
         backButton = findViewById(R.id.backButton)
 
         hpfbText = findViewById(R.id.hpfbText)
@@ -54,16 +55,28 @@ class ActivityBook : AppCompatActivity() {
         imageFour = findViewById(R.id.imageFour)
         imageFive = findViewById(R.id.imageFive)
 
+        loadData()
+
         val buttonListener = View.OnClickListener { view ->
             finish()
         }
 
         backButton.setOnClickListener(buttonListener)
 
+        Log.d("fav", favList.toString())
+
         val bookTag = intent.getStringExtra("bookTag")
         if (bookTag == "hp1") {
+
+            if (favList.contains(bookTag)) {
+                favButton.setImageResource(R.drawable.btn_star_active)
+            } else {
+                favButton.setImageResource(R.drawable.btn_star_inactive)
+            }
+
             storyTitle.text = "and the Philosopher's Stone"
-            synopsisText.text = "The book is about 11 year old Harry Potter, who receives a letter saying that he is invited to attend Hogwarts, school of witchcraft and wizardry. He then learns that a powerful wizard and his minions are after the sorcerer’s stone that will make this evil wizard immortal and undefeatable."
+            synopsisText.text =
+                "The book is about 11 year old Harry Potter, who receives a letter saying that he is invited to attend Hogwarts, school of witchcraft and wizardry. He then learns that a powerful wizard and his minions are after the sorcerer’s stone that will make this evil wizard immortal and undefeatable."
 
             imageOne.setImageResource(R.drawable.hp1a)
             imageOne.setTag("hp1a")
@@ -79,11 +92,30 @@ class ActivityBook : AppCompatActivity() {
 
             imageFive.setImageResource(R.drawable.hp1e)
             imageFive.setTag("hp1e")
-        }
 
-        else if (bookTag == "hp2") {
+            favButton.setOnClickListener {
+                if (favList.contains(bookTag)) {
+                    favButton.setImageResource(R.drawable.btn_star_inactive)
+                    Log.d("fav", "removed from favList")
+                    favList.remove(bookTag)
+
+                } else {
+                    favButton.setImageResource(R.drawable.btn_star_active)
+                    Log.d("fav", "added to favList")
+                    favList.add(bookTag)
+                }
+            }
+        } else if (bookTag == "hp2") {
+
+            if (favList.contains(bookTag)) {
+                favButton.setImageResource(R.drawable.btn_star_active)
+            } else {
+                favButton.setImageResource(R.drawable.btn_star_inactive)
+            }
+
             storyTitle.text = "and the Chamber of Secrets"
-            synopsisText.text = "When the Chamber of Secrets is opened again at the HogwartsSchool for Witchcraft and Wizardry, second-year student Harry Potter finds himself in danger from a dark power that has once more been released on the school."
+            synopsisText.text =
+                "When the Chamber of Secrets is opened again at the HogwartsSchool for Witchcraft and Wizardry, second-year student Harry Potter finds himself in danger from a dark power that has once more been released on the school."
 
             imageOne.setImageResource(R.drawable.hp2a)
             imageOne.setTag("hp2a")
@@ -99,11 +131,30 @@ class ActivityBook : AppCompatActivity() {
 
             imageFive.setImageResource(R.drawable.hp2e)
             imageFive.setTag("hp2e")
-        }
 
-        else if (bookTag == "hp3") {
+            favButton.setOnClickListener {
+                if (favList.contains(bookTag)) {
+                    favButton.setImageResource(R.drawable.btn_star_inactive)
+                    Log.d("fav", "removed from favList")
+                    favList.remove(bookTag)
+
+                } else {
+                    favButton.setImageResource(R.drawable.btn_star_active)
+                    Log.d("fav", "added to favList")
+                    favList.add(bookTag)
+                }
+            }
+        } else if (bookTag == "hp3") {
+
+            if (favList.contains(bookTag)) {
+                favButton.setImageResource(R.drawable.btn_star_active)
+            } else {
+                favButton.setImageResource(R.drawable.btn_star_inactive)
+            }
+
             storyTitle.text = "and the Prisoner of Azkaban"
-            synopsisText.text = "For twelve years, the dread fortress of Azkaban held an infamous prisoner named Sirius Black. Convicted of killing thirteen people with a single curse, he was said to be the heir apparent to the Dark Lord, Voldemort. Now he has escaped, leaving only two clues as to where he might be headed: Harry Potter's defeat of You-Know-Who was Black's downfall as well. And the Azkaban guards heard Black muttering in his sleep, He's at Hogwarts. Harry Potter isn't safe, not even within the walls of his magical school, surrounded by his friends. Because on top of it all, there may well be a traitor in their midst."
+            synopsisText.text =
+                "For twelve years, the dread fortress of Azkaban held an infamous prisoner named Sirius Black. Convicted of killing thirteen people with a single curse, he was said to be the heir apparent to the Dark Lord, Voldemort. Now he has escaped, leaving only two clues as to where he might be headed: Harry Potter's defeat of You-Know-Who was Black's downfall as well. And the Azkaban guards heard Black muttering in his sleep, He's at Hogwarts. Harry Potter isn't safe, not even within the walls of his magical school, surrounded by his friends. Because on top of it all, there may well be a traitor in their midst."
 
             imageOne.setImageResource(R.drawable.hp3a)
             imageOne.setTag("hp3a")
@@ -119,11 +170,30 @@ class ActivityBook : AppCompatActivity() {
 
             imageFive.setImageResource(R.drawable.hp3e)
             imageFive.setTag("hp3e")
-        }
 
-        else if (bookTag == "hp4") {
+            favButton.setOnClickListener {
+                if (favList.contains(bookTag)) {
+                    favButton.setImageResource(R.drawable.btn_star_inactive)
+                    Log.d("fav", "removed from favList")
+                    favList.remove(bookTag)
+
+                } else {
+                    favButton.setImageResource(R.drawable.btn_star_active)
+                    Log.d("fav", "added to favList")
+                    favList.add(bookTag)
+                }
+            }
+        } else if (bookTag == "hp4") {
+
+            if (favList.contains(bookTag)) {
+                favButton.setImageResource(R.drawable.btn_star_active)
+            } else {
+                favButton.setImageResource(R.drawable.btn_star_inactive)
+            }
+
             storyTitle.text = "and the Goblet of Fire"
-            synopsisText.text = "Harry Potter, a fourth-year student at Hogwarts School of Witchcraft and Wizardry, longs to escape his hateful relatives, the Dursleys, and live as a normal fourteen-year-old wizard, but what Harry does not yet realize is that he is not a normal wizard, and in his case, different can be deadly."
+            synopsisText.text =
+                "Harry Potter, a fourth-year student at Hogwarts School of Witchcraft and Wizardry, longs to escape his hateful relatives, the Dursleys, and live as a normal fourteen-year-old wizard, but what Harry does not yet realize is that he is not a normal wizard, and in his case, different can be deadly."
 
             imageOne.setImageResource(R.drawable.hp4a)
             imageOne.setTag("hp4a")
@@ -139,11 +209,30 @@ class ActivityBook : AppCompatActivity() {
 
             imageFive.setImageResource(R.drawable.hp4e)
             imageFive.setTag("hp4e")
-        }
 
-        else if (bookTag == "hp5") {
+            favButton.setOnClickListener {
+                if (favList.contains(bookTag)) {
+                    favButton.setImageResource(R.drawable.btn_star_inactive)
+                    Log.d("fav", "removed from favList")
+                    favList.remove(bookTag)
+
+                } else {
+                    favButton.setImageResource(R.drawable.btn_star_active)
+                    Log.d("fav", "added to favList")
+                    favList.add(bookTag)
+                }
+            }
+        } else if (bookTag == "hp5") {
+
+            if (favList.contains(bookTag)) {
+                favButton.setImageResource(R.drawable.btn_star_active)
+            } else {
+                favButton.setImageResource(R.drawable.btn_star_inactive)
+            }
+
             storyTitle.text = "and the Order of the Phoenix"
-            synopsisText.text = "Harry Potter, now a fifth-year student at Hogwarts School of Witchcraft and Wizardry, struggles with a threatening teacher, a problematic house elf, the dread of upcoming final exams, and haunting dreams that hint toward his mysterious past."
+            synopsisText.text =
+                "Harry Potter, now a fifth-year student at Hogwarts School of Witchcraft and Wizardry, struggles with a threatening teacher, a problematic house elf, the dread of upcoming final exams, and haunting dreams that hint toward his mysterious past."
 
             imageOne.setImageResource(R.drawable.hp5a)
             imageOne.setTag("hp5a")
@@ -159,11 +248,30 @@ class ActivityBook : AppCompatActivity() {
 
             imageFive.setImageResource(R.drawable.hp5e)
             imageFive.setTag("hp5e")
-        }
 
-        else if (bookTag == "hp6") {
+            favButton.setOnClickListener {
+                if (favList.contains(bookTag)) {
+                    favButton.setImageResource(R.drawable.btn_star_inactive)
+                    Log.d("fav", "removed from favList")
+                    favList.remove(bookTag)
+
+                } else {
+                    favButton.setImageResource(R.drawable.btn_star_active)
+                    Log.d("fav", "added to favList")
+                    favList.add(bookTag)
+                }
+            }
+        } else if (bookTag == "hp6") {
+
+            if (favList.contains(bookTag)) {
+                favButton.setImageResource(R.drawable.btn_star_active)
+            } else {
+                favButton.setImageResource(R.drawable.btn_star_inactive)
+            }
+
             storyTitle.text = "and the Half-Blood Prince"
-            synopsisText.text = "Harry searches for the full and complex story of the boy who became Lord Voldemort, and thereby finds what may be his only vulnerability."
+            synopsisText.text =
+                "Harry searches for the full and complex story of the boy who became Lord Voldemort, and thereby finds what may be his only vulnerability."
 
             imageOne.setImageResource(R.drawable.hp6a)
             imageOne.setTag("hp6a")
@@ -179,11 +287,30 @@ class ActivityBook : AppCompatActivity() {
 
             imageFive.setImageResource(R.drawable.hp6e)
             imageFive.setTag("hp6e")
-        }
 
-        else if (bookTag == "hp7") {
+            favButton.setOnClickListener {
+                if (favList.contains(bookTag)) {
+                    favButton.setImageResource(R.drawable.btn_star_inactive)
+                    Log.d("fav", "removed from favList")
+                    favList.remove(bookTag)
+
+                } else {
+                    favButton.setImageResource(R.drawable.btn_star_active)
+                    Log.d("fav", "added to favList")
+                    favList.add(bookTag)
+                }
+            }
+        } else if (bookTag == "hp7") {
+
+            if (favList.contains(bookTag)) {
+                favButton.setImageResource(R.drawable.btn_star_active)
+            } else {
+                favButton.setImageResource(R.drawable.btn_star_inactive)
+            }
+
             storyTitle.text = "and the Deathly Hallows"
-            synopsisText.text = "Burdened with the dark, dangerous, and seemingly impossible task of locating and destroying Voldermort's remaining Horcruxes, Harry, feeling alone and uncertain about his future, struggles to find the inner strength he needs to follow the path set out before him."
+            synopsisText.text =
+                "Burdened with the dark, dangerous, and seemingly impossible task of locating and destroying Voldermort's remaining Horcruxes, Harry, feeling alone and uncertain about his future, struggles to find the inner strength he needs to follow the path set out before him."
 
             imageOne.setImageResource(R.drawable.hp7a)
             imageOne.setTag("hp7a")
@@ -199,11 +326,30 @@ class ActivityBook : AppCompatActivity() {
 
             imageFive.setImageResource(R.drawable.hp7e)
             imageFive.setTag("hp7e")
-        }
 
-        else if (bookTag == "hp8") {
+            favButton.setOnClickListener {
+                if (favList.contains(bookTag)) {
+                    favButton.setImageResource(R.drawable.btn_star_inactive)
+                    Log.d("fav", "removed from favList")
+                    favList.remove(bookTag)
+
+                } else {
+                    favButton.setImageResource(R.drawable.btn_star_active)
+                    Log.d("fav", "added to favList")
+                    favList.add(bookTag)
+                }
+            }
+        } else if (bookTag == "hp8") {
+
+            if (favList.contains(bookTag)) {
+                favButton.setImageResource(R.drawable.btn_star_active)
+            } else {
+                favButton.setImageResource(R.drawable.btn_star_inactive)
+            }
+
             storyTitle.text = "and the Cursed Child"
-            synopsisText.text = "It was always difficult being Harry Potter and it isn’t much easier now that he is an overworked employee of the Ministry of Magic, a husband and father of three school-age children. While Harry grapples with a past that refuses to stay where it belongs, his youngest son Albus must struggle with the weight of a family legacy he never wanted. As past and present fuse ominously, both father and son learn the uncomfortable truth: sometimes, darkness comes from unexpected places."
+            synopsisText.text =
+                "It was always difficult being Harry Potter and it isn’t much easier now that he is an overworked employee of the Ministry of Magic, a husband and father of three school-age children. While Harry grapples with a past that refuses to stay where it belongs, his youngest son Albus must struggle with the weight of a family legacy he never wanted. As past and present fuse ominously, both father and son learn the uncomfortable truth: sometimes, darkness comes from unexpected places."
 
             imageOne.setImageResource(R.drawable.hp8a)
             imageOne.setTag("hp8a")
@@ -219,12 +365,31 @@ class ActivityBook : AppCompatActivity() {
 
             imageFive.setImageResource(R.drawable.hp8e)
             imageFive.setTag("hp8e")
-        }
 
-        else if (bookTag == "fb1") {
+            favButton.setOnClickListener {
+                if (favList.contains(bookTag)) {
+                    favButton.setImageResource(R.drawable.btn_star_inactive)
+                    Log.d("fav", "removed from favList")
+                    favList.remove(bookTag)
+
+                } else {
+                    favButton.setImageResource(R.drawable.btn_star_active)
+                    Log.d("fav", "added to favList")
+                    favList.add(bookTag)
+                }
+            }
+        } else if (bookTag == "fb1") {
+
+            if (favList.contains(bookTag)) {
+                favButton.setImageResource(R.drawable.btn_star_active)
+            } else {
+                favButton.setImageResource(R.drawable.btn_star_inactive)
+            }
+
             hpfbText.text = "Fantastic Beasts"
             storyTitle.text = "and Where to Find Them"
-            synopsisText.text = "While attending the Magical Congress of the United States of America in 1926, Newt Scamander is pursued by the wizarding authorities when dangerous beasts and their habitats escape from his magical briefcase."
+            synopsisText.text =
+                "While attending the Magical Congress of the United States of America in 1926, Newt Scamander is pursued by the wizarding authorities when dangerous beasts and their habitats escape from his magical briefcase."
 
             imageOne.setImageResource(R.drawable.fb1a)
             imageOne.setTag("fb1a")
@@ -240,12 +405,31 @@ class ActivityBook : AppCompatActivity() {
 
             imageFive.setImageResource(R.drawable.fb1e)
             imageFive.setTag("fb1e")
-        }
 
-        else if (bookTag == "fb2") {
+            favButton.setOnClickListener {
+                if (favList.contains(bookTag)) {
+                    favButton.setImageResource(R.drawable.btn_star_inactive)
+                    Log.d("fav", "removed from favList")
+                    favList.remove(bookTag)
+
+                } else {
+                    favButton.setImageResource(R.drawable.btn_star_active)
+                    Log.d("fav", "added to favList")
+                    favList.add(bookTag)
+                }
+            }
+        } else if (bookTag == "fb2") {
+
+            if (favList.contains(bookTag)) {
+                favButton.setImageResource(R.drawable.btn_star_active)
+            } else {
+                favButton.setImageResource(R.drawable.btn_star_inactive)
+            }
+
             hpfbText.text = "Fantastic Beasts"
             storyTitle.text = "and the Crimes of Grindelwald"
-            synopsisText.text = "The powerful Dark wizard Gellert Grindelwald was captured in New York with the help of Newt Scamander. But, making good on his threat, Grindelwald escapes custody and sets about gathering followers, most of whom are unsuspecting of his true agenda: to raise pure-blood wizards up to rule over all non-magical beings."
+            synopsisText.text =
+                "The powerful Dark wizard Gellert Grindelwald was captured in New York with the help of Newt Scamander. But, making good on his threat, Grindelwald escapes custody and sets about gathering followers, most of whom are unsuspecting of his true agenda: to raise pure-blood wizards up to rule over all non-magical beings."
 
             imageOne.setImageResource(R.drawable.fb2a)
             imageOne.setTag("fb2a")
@@ -261,12 +445,31 @@ class ActivityBook : AppCompatActivity() {
 
             imageFive.setImageResource(R.drawable.fb2e)
             imageFive.setTag("fb2e")
-        }
 
-        else if (bookTag == "fb3") {
+            favButton.setOnClickListener {
+                if (favList.contains(bookTag)) {
+                    favButton.setImageResource(R.drawable.btn_star_inactive)
+                    Log.d("fav", "removed from favList")
+                    favList.remove(bookTag)
+
+                } else {
+                    favButton.setImageResource(R.drawable.btn_star_active)
+                    Log.d("fav", "added to favList")
+                    favList.add(bookTag)
+                }
+            }
+        } else if (bookTag == "fb3") {
+
+            if (favList.contains(bookTag)) {
+                favButton.setImageResource(R.drawable.btn_star_active)
+            } else {
+                favButton.setImageResource(R.drawable.btn_star_inactive)
+            }
+
             hpfbText.text = "Fantastic Beasts"
             storyTitle.text = "and the Secrets of Dumbledore"
-            synopsisText.text = "Professor Albus Dumbledore knows the powerful, dark wizard Gellert Grindelwald is moving to seize control of the wizarding world. Unable to stop him alone, he entrusts magizoologist Newt Scamander to lead an intrepid team of wizards and witches. They soon encounter an array of old and new beasts as they clash with Grindelwald's growing legion of followers."
+            synopsisText.text =
+                "Professor Albus Dumbledore knows the powerful, dark wizard Gellert Grindelwald is moving to seize control of the wizarding world. Unable to stop him alone, he entrusts magizoologist Newt Scamander to lead an intrepid team of wizards and witches. They soon encounter an array of old and new beasts as they clash with Grindelwald's growing legion of followers."
 
             imageOne.setImageResource(R.drawable.fb3a)
             imageOne.setTag("fb3a")
@@ -282,6 +485,37 @@ class ActivityBook : AppCompatActivity() {
 
             imageFive.setImageResource(R.drawable.fb3e)
             imageFive.setTag("fb3e")
+
+            favButton.setOnClickListener {
+                if (favList.contains(bookTag)) {
+                    favButton.setImageResource(R.drawable.btn_star_inactive)
+                    Log.d("fav", "removed from favList")
+                    favList.remove(bookTag)
+
+                } else {
+                    favButton.setImageResource(R.drawable.btn_star_active)
+                    Log.d("fav", "added to favList")
+                    favList.add(bookTag)
+                }
+            }
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        saveData()
+    }
+
+    private fun saveData() {
+        val file = File(this.filesDir, "list.txt")
+        file.writeText(favList.joinToString("\n"))
+    }
+
+    private fun loadData() {
+        val file = File(this.filesDir, "list.txt")
+        if (file.exists()) {
+            val data = file.readText()
+            favList = data.split("\n").filter { it.isNotEmpty() }.toMutableList()
         }
     }
 }
